@@ -4,11 +4,16 @@ from werkzeug.exceptions import NotFound, BadRequest
 products_app = Blueprint("products_app", __name__)
 
 
-PRODUCTS_DATA = {
-    1: "Laptop",
-    2: "Smartphone",
-    3: "Tablet",
-}
+def get_default_products():
+    return {
+        1: "Laptop",
+        2: "Smartphone",
+        3: "Tablet",
+    }
+
+
+PRODUCTS_DATA = {}
+PRODUCTS_DATA.update(get_default_products())
 
 
 @products_app.route("/", endpoint="list")
@@ -40,3 +45,11 @@ def create_product():
     product_id = len(PRODUCTS_DATA) + 1
     PRODUCTS_DATA[product_id] = product_name
     return redirect(url_for("products_app.detail", product_id=product_id))
+
+
+@products_app.route("/reset/", methods=["POST"], endpoint="reset")
+def reset_products():
+    PRODUCTS_DATA.clear()
+    PRODUCTS_DATA.update(get_default_products())
+    # return {"message": "ok"}
+    return {"ok": True}
