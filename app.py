@@ -34,3 +34,6 @@ def calc_numbers():
     b = "2"
     # b = 2
     return str(a + b)
+
+
+qwerty()
